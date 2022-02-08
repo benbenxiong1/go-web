@@ -22,7 +22,8 @@ func SetupRoute(router *gin.Engine)  {
 func registerGlobalMiddleWare(router *gin.Engine) {
 	router.Use(
 		middlewares.Logger(),
-		gin.Recovery())
+		middlewares.Recovery(),
+		)
 }
 
 // setup404Handler 处理404请求
