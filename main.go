@@ -35,7 +35,6 @@ func main()  {
 	// 初始化路由绑定
 	bootstrap.SetupRoute(r)
 
-
 	// 运行服务
 	err := r.Run(":" + config.Get("app.port"))
 	if err != nil {
