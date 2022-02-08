@@ -24,6 +24,7 @@ func main()  {
 	// new 一个 Gin Engine 实例
 	r := gin.New()
 
+	bootstrap.SetupDB()
 	// 初始化路由绑定
 	bootstrap.SetupRoute(r)
 
