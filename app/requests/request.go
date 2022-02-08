@@ -10,7 +10,9 @@ import (
 // ValidatorFunc 验证函数类型
 type ValidatorFunc func(interface{}, *gin.Context) map[string][]string
 
+// Validate 参数验证
 func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
+
 	// 1. 解析请求，支持 JSON 数据、表单请求和 URL Query
 	if err := c.ShouldBindJSON(obj); err != nil {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
@@ -35,8 +37,7 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 	return true
 }
 
-
-func validate(data interface{},rules ,messages govalidator.MapData) map[string][]string {
+func validate(data interface{}, rules, messages govalidator.MapData) map[string][]string {
 	// 配置初始化
 	opts := govalidator.Options{
 		Data:          data,

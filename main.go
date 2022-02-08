@@ -21,12 +21,16 @@ func main()  {
 	flag.Parse()
 	config.InitConfig(env)
 
+	// 初始化 Logger
+	bootstrap.SetupLogger()
+
 	// new 一个 Gin Engine 实例
 	r := gin.New()
 
 	bootstrap.SetupDB()
 	// 初始化路由绑定
 	bootstrap.SetupRoute(r)
+
 
 	// 运行服务
 	err := r.Run(":" + config.Get("app.port"))
