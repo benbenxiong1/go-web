@@ -3,7 +3,6 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"go-web/app/http/controllers/api/v1/auth"
-	"net/http"
 )
 
 // RegisterAPIRoutes 注册网页相关路由
@@ -24,10 +23,6 @@ func RegisterAPIRoutes(route *gin.Engine)  {
 
 		}
 
-		v1.GET("/", func(context *gin.Context) {
-			context.JSON(http.StatusOK,gin.H{
-				"msg":"Hello Word",
-			})
-		})
+
 	}
 }
