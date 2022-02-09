@@ -14,12 +14,15 @@ func RegisterAPIRoutes(route *gin.Engine) {
 			signup := new(auth.SignupController)
 			// 判断手机是否已注册
 			authGroup.POST("/signup/phone/exist", signup.IsPhoneExist)
+			// 判断email是否已注册
 			authGroup.POST("/signup/email/exist", signup.IsEmailExist)
 
 			// 发送验证码
 			verifyCode := new(auth.VerifyCodeController)
 			// 图片验证码，需要加限流
 			authGroup.POST("/verify-codes/captcha", verifyCode.ShowCaptcha)
+			//短信验证码
+			authGroup.POST("/verify-codes/phone", verifyCode.SendUsingPhone)
 		}
 
 	}
