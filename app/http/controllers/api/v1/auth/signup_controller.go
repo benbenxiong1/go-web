@@ -1,10 +1,12 @@
 package auth
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	v1 "go-web/app/http/controllers/api/v1"
 	"go-web/app/models/user"
 	"go-web/app/requests"
+	"go-web/pkg/jwt"
 	"go-web/pkg/response"
 )
 
@@ -59,8 +61,10 @@ func (s *SignupController) SignupUsingPhone(c *gin.Context) {
 	_user.Create()
 
 	if _user.ID > 0 {
+		token := jwt.NewJWT().IssueToken(_user.GetStringID(), _user.Name)
 		response.CreatedJSON(c, gin.H{
-			"data": _user,
+			"token": token,
+			"data":  _user,
 		})
 	} else {
 		response.Abort500(c, "创建用户失败，请稍后尝试~")
@@ -83,8 +87,11 @@ func (s SignupController) SignupUsingEmail(c *gin.Context) {
 	userModel.Create()
 
 	if userModel.ID > 0 {
+		token := jwt.NewJWT().IssueToken(userModel.GetStringID(), userModel.Name)
+		fmt.Println(token)
 		response.CreatedJSON(c, gin.H{
-			"data": userModel,
+			"token": token,
+			"data":  userModel,
 		})
 	} else {
 		response.Abort500(c, "创建用户失败，请稍后尝试~")
