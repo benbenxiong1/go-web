@@ -16,7 +16,7 @@ require (
 	github.com/thedevsaddam/govalidator v1.9.10
 	github.com/ugorji/go v1.2.6 // indirect
 	go.uber.org/zap v1.21.0
-	golang.org/x/crypto v0.0.0-20220131195533-30dcbda58838 // indirect
+	golang.org/x/crypto v0.0.0-20220208233918-bba287dce954
 	golang.org/x/sys v0.0.0-20220204135822-1c1b9b1eba6a // indirect
 	gopkg.in/ini.v1 v1.66.3 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
