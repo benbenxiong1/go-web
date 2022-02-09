@@ -3,10 +3,12 @@ module go-web
 go 1.16
 
 require (
+	github.com/KenmyZhang/aliyun-communicate v0.0.0-20180308134849-7997edc57454
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/mojocn/base64Captcha v1.3.5
+	github.com/pborman/uuid v1.2.1 // indirect
 	github.com/spf13/afero v1.8.1 // indirect
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/viper v1.10.1
