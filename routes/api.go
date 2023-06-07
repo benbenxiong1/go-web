@@ -3,6 +3,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-web/app/http/controllers/api/v1/auth"
 	"net/http"
 )
 
@@ -15,5 +16,10 @@ func RegisterAPIRoutes(route *gin.Engine) {
 				"hello": "word",
 			})
 		})
+		authGroup := v1.Group("/auth")
+		{
+			suc := new(auth.SignupController)
+			authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
+		}
 	}
 }
