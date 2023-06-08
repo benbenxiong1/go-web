@@ -28,15 +28,7 @@ func ValidateSignupPhoneExist(data interface{}) map[string][]string {
 		},
 	}
 
-	// 配置初始化
-	opts := govalidator.Options{
-		Data:          data,
-		Rules:         rules,
-		Messages:      message,
-		TagIdentifier: "valid", // 模型中的 Struct 标签标识符
-	}
-
-	return govalidator.New(opts).ValidateStruct()
+	return validate(data, rules, message)
 }
 
 func ValidateSignupEmailExist(data interface{}) map[string][]string {
@@ -55,12 +47,5 @@ func ValidateSignupEmailExist(data interface{}) map[string][]string {
 		},
 	}
 
-	opts := govalidator.Options{
-		Data:          data,
-		Rules:         rules,
-		Messages:      message,
-		TagIdentifier: "valid",
-	}
-
-	return govalidator.New(opts).ValidateStruct()
+	return validate(data, rules, message)
 }
