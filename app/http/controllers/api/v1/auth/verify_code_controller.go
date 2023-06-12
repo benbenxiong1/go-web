@@ -5,7 +5,7 @@ import (
 	v1 "go-web/app/http/controllers/api/v1"
 	"go-web/pkg/captcha"
 	"go-web/pkg/logger"
-	"net/http"
+	"go-web/pkg/response"
 )
 
 // VerifyCodeController 用户控制器
@@ -18,7 +18,7 @@ func (v *VerifyCodeController) ShowCaptcha(c *gin.Context) {
 	ids, b64s, err := captcha.NewCaptcha().GenerateCaptcha()
 	logger.LogIf(err)
 
-	c.JSON(http.StatusOK, gin.H{
+	response.Json(c, gin.H{
 		"captcha_id":    ids,
 		"captcha_image": b64s,
 	})
