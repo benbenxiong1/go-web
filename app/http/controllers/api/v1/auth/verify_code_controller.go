@@ -40,3 +40,18 @@ func (v *VerifyCodeController) SendUsingPhone(c *gin.Context) {
 		response.Success(c)
 	}
 }
+
+func (v *VerifyCodeController) SendUsingEmail(c *gin.Context) {
+	// 验证表单
+	request := requests.VerifyCodeEmailRequest{}
+	if ok := requests.Validate(c, request, requests.VerifyCodeEmail); !ok {
+		return
+	}
+
+	// 发送邮件
+	if ok := verifycode.NewVerify().SendEmail(request.Email); !ok {
+		response.Abort500(c, "邮件发送失败。。。")
+	} else {
+		response.Success(c)
+	}
+}
