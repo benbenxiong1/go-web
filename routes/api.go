@@ -40,12 +40,17 @@ func RegisterAPIRoutes(route *gin.Engine) {
 
 			// 登录
 			login := new(auth.LoginController)
-			//手机号 + 验证码登录
+			// 手机号 + 验证码登录
 			authGroup.POST("/login/using-phone", login.LoginByPhone)
 			// 支持手机号/用户名/邮箱登录
 			authGroup.POST("/login/using-password", login.Login)
 			// 刷新token
 			authGroup.POST("/login/refresh-token", login.RefreshToken)
+
+			// 修改密码
+			pwd := new(auth.PasswordController)
+			// 手机号+验证码修改密码
+			authGroup.POST("/password-reset/using-phone", pwd.ResetByPhone)
 		}
 	}
 }
