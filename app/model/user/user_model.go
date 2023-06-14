@@ -4,6 +4,7 @@ package user
 import (
 	"go-web/app/model"
 	"go-web/pkg/database"
+	"go-web/pkg/hash"
 )
 
 type User struct {
@@ -18,4 +19,9 @@ type User struct {
 
 func (u *User) Create() {
 	database.DB.Create(&u)
+}
+
+// ComparePassword 验证密码是否一致
+func (u *User) ComparePassword(password string) bool {
+	return hash.BcryptCheck(password, u.Password)
 }
