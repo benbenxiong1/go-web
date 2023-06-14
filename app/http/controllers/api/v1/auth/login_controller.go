@@ -49,3 +49,14 @@ func (l *LoginController) Login(c *gin.Context) {
 	}
 
 }
+
+func (l *LoginController) RefreshToken(c *gin.Context) {
+	token, err := jwt.NewJwt().RefreshToken(c)
+	if err != nil {
+		response.Error(c, err, "令牌刷新失败")
+	} else {
+		response.Json(c, gin.H{
+			"token": token,
+		})
+	}
+}
