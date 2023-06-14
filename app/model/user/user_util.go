@@ -30,6 +30,11 @@ func GetByPhone(phone string) (userModel User) {
 	return
 }
 
+func GetByEmail(email string) (userModel User) {
+	database.DB.Where("email = ?", email).First(&userModel)
+	return
+}
+
 func Get(userId string) (userModel User) {
 	database.DB.Where("id = ?", userId).First(&userModel)
 	return

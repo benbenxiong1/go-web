@@ -51,6 +51,8 @@ func RegisterAPIRoutes(route *gin.Engine) {
 			pwd := new(auth.PasswordController)
 			// 手机号+验证码修改密码
 			authGroup.POST("/password-reset/using-phone", pwd.ResetByPhone)
+			// 邮箱+验证码修改密码
+			authGroup.POST("/password-reset/using-email", pwd.ResetByEmail)
 		}
 	}
 }
