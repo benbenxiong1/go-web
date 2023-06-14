@@ -6,6 +6,7 @@ import (
 	v1 "go-web/app/http/controllers/api/v1"
 	"go-web/app/model/user"
 	"go-web/app/requests"
+	"go-web/pkg/jwt"
 	"go-web/pkg/response"
 )
 
@@ -55,8 +56,10 @@ func (s *SignupController) SignupUsingPhone(c *gin.Context) {
 	_user.Create()
 
 	if _user.ID > 0 {
+		token := jwt.NewJwt().IssueToken(_user.GetStringId(), _user.Name)
 		response.CreatedJSON(c, gin.H{
-			"data": _user,
+			"data":  _user,
+			"token": token,
 		})
 	} else {
 		response.Abort500(c, "创建用户失败，请稍后尝试~")
@@ -81,8 +84,10 @@ func (s *SignupController) SignupUsingEmail(c *gin.Context) {
 	_user.Create()
 
 	if _user.ID > 0 {
+		token := jwt.NewJwt().IssueToken(_user.GetStringId(), _user.Name)
 		response.Created(c, gin.H{
-			"user": _user,
+			"data":  _user,
+			"token": token,
 		})
 	} else {
 		response.Abort500(c, "添加失败，请重试")
