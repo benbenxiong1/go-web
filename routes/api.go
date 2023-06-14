@@ -4,55 +4,52 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"go-web/app/http/controllers/api/v1/auth"
-	"net/http"
+	"go-web/app/http/middlewares"
 )
 
 func RegisterAPIRoutes(route *gin.Engine) {
 
 	v1 := route.Group("v1")
+	v1.Use(middlewares.LimitIp("1000-H"))
 	{
-		v1.GET("/", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"hello": "word",
-			})
-		})
 		authGroup := v1.Group("/auth")
+		authGroup.Use(middlewares.LimitIp("200-H"))
 		{
 			// 注册
 			suc := new(auth.SignupController)
 			// 验证手机号是否存在
-			authGroup.POST("/signup/phone/exist", suc.IsPhoneExist)
+			authGroup.POST("/signup/phone/exist", middlewares.GuestJwt(), suc.IsPhoneExist)
 			// 验证邮箱是否存在
-			authGroup.POST("/signup/email/exist", suc.IsEmailExist)
+			authGroup.POST("/signup/email/exist", middlewares.GuestJwt(), suc.IsEmailExist)
 			// 手机号注册
-			authGroup.POST("/signup/using-phone", suc.SignupUsingPhone)
+			authGroup.POST("/signup/using-phone", middlewares.GuestJwt(), suc.SignupUsingPhone)
 			// 邮箱注册
-			authGroup.POST("/signup/using-email", suc.SignupUsingEmail)
+			authGroup.POST("/signup/using-email", middlewares.GuestJwt(), suc.SignupUsingEmail)
 
 			// 验证
 			vcc := new(auth.VerifyCodeController)
 			// 验证码
-			authGroup.POST("/verify-codes/captcha", vcc.ShowCaptcha)
+			authGroup.POST("/verify-codes/captcha", middlewares.LimitPerRoute("50-H"), vcc.ShowCaptcha)
 			// 验证手机号+验证码
-			authGroup.POST("/verify-codes/phone", vcc.SendUsingPhone)
+			authGroup.POST("/verify-codes/phone", middlewares.LimitPerRoute("20-H"), vcc.SendUsingPhone)
 			// 验证email+验证码
-			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
+			authGroup.POST("/verify-codes/email", middlewares.LimitPerRoute("20-H"), vcc.SendUsingEmail)
 
 			// 登录
 			login := new(auth.LoginController)
 			// 手机号 + 验证码登录
-			authGroup.POST("/login/using-phone", login.LoginByPhone)
+			authGroup.POST("/login/using-phone", middlewares.GuestJwt(), login.LoginByPhone)
 			// 支持手机号/用户名/邮箱登录
-			authGroup.POST("/login/using-password", login.Login)
+			authGroup.POST("/login/using-password", middlewares.GuestJwt(), login.Login)
 			// 刷新token
-			authGroup.POST("/login/refresh-token", login.RefreshToken)
+			authGroup.POST("/login/refresh-token", middlewares.AuthJwt(), login.RefreshToken)
 
 			// 修改密码
 			pwd := new(auth.PasswordController)
 			// 手机号+验证码修改密码
-			authGroup.POST("/password-reset/using-phone", pwd.ResetByPhone)
+			authGroup.POST("/password-reset/using-phone", middlewares.LimitPerRoute("5-H"), pwd.ResetByPhone)
 			// 邮箱+验证码修改密码
-			authGroup.POST("/password-reset/using-email", pwd.ResetByEmail)
+			authGroup.POST("/password-reset/using-email", middlewares.LimitPerRoute("5-H"), pwd.ResetByEmail)
 		}
 	}
 }
