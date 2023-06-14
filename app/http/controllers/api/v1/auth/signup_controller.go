@@ -41,7 +41,7 @@ func (s *SignupController) IsEmailExist(c *gin.Context) {
 
 func (s *SignupController) SignupUsingPhone(c *gin.Context) {
 	request := requests.SignupUsingPhoneRequest{}
-	if ok := requests.Validate(c, request, requests.SignupUsingPhone); !ok {
+	if ok := requests.Validate(c, &request, requests.SignupUsingPhone); !ok {
 		return
 	}
 
@@ -60,6 +60,32 @@ func (s *SignupController) SignupUsingPhone(c *gin.Context) {
 		})
 	} else {
 		response.Abort500(c, "创建用户失败，请稍后尝试~")
+	}
+
+}
+
+func (s *SignupController) SignupUsingEmail(c *gin.Context) {
+	request := requests.SignupUsingEmailRequest{}
+
+	if ok := requests.Validate(c, &request, requests.SignupUsingEmail); !ok {
+		return
+	}
+
+	// 验证通过
+	_user := user.User{
+		Name:     request.Name,
+		Email:    request.Email,
+		Password: request.Password,
+	}
+
+	_user.Create()
+
+	if _user.ID > 0 {
+		response.Created(c, gin.H{
+			"user": _user,
+		})
+	} else {
+		response.Abort500(c, "添加失败，请重试")
 	}
 
 }
