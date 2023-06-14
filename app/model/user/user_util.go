@@ -26,7 +26,11 @@ func GetByMulti(loginId string) (userModel User) {
 }
 
 func GetByPhone(phone string) (userModel User) {
-	database.DB.Where("phone = ?", phone).
-		First(&userModel)
+	database.DB.Where("phone = ?", phone).First(&userModel)
+	return
+}
+
+func Get(userId string) (userModel User) {
+	database.DB.Where("id = ?", userId).First(&userModel)
 	return
 }
