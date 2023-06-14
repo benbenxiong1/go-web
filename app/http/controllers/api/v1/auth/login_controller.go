@@ -31,3 +31,21 @@ func (l *LoginController) LoginByPhone(c *gin.Context) {
 		})
 	}
 }
+
+func (l *LoginController) Login(c *gin.Context) {
+	request := requests.LoginByPasswordRequest{}
+	if ok := requests.Validate(c, &request, requests.LoginByPassword); !ok {
+		return
+	}
+
+	user, err := auth.Attempt(request.Name, request.Password)
+	if err != nil {
+		response.Error(c, err, "账号不存在或密码错误")
+	} else {
+		token := jwt.NewJwt().IssueToken(user.GetStringId(), user.Name)
+		response.Json(c, gin.H{
+			"token": token,
+		})
+	}
+
+}
