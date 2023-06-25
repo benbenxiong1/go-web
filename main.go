@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"go-web/app/cmd"
+	"go-web/app/cmd/make"
 	"go-web/bootstrap"
 	baseConfig "go-web/config"
 	"go-web/pkg/config"
@@ -23,7 +24,9 @@ func main() {
 		Use:   "Gohub",
 		Short: "A simple forum project",
 		Long:  `Default will run "serve" command ,you can use "-h" flag to see all subcommands`,
-		PersistentPostRun: func(Command *cobra.Command, args []string) {
+
+		// rootCmd 的所有子命令都会执行以下代码
+		PersistentPreRun: func(Command *cobra.Command, args []string) {
 			// 配置初始化，依赖命令行 --env 参数
 			config.InitConfig(cmd.Env)
 
@@ -42,6 +45,8 @@ func main() {
 	rootCmd.AddCommand(
 		cmd.CmdServe,
 		cmd.CmdKey,
+		cmd.CmdPlay,
+		make.CmdMake,
 	)
 
 	// 配置默认运行 web 服务

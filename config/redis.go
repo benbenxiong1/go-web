@@ -1,6 +1,8 @@
 package config
 
-import "go-web/pkg/config"
+import (
+	"go-web/pkg/config"
+)
 
 func init() {
 	config.Add("redis", func() map[string]interface{} {
