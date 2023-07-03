@@ -62,8 +62,9 @@ var CmdMake = &cobra.Command{
 func init() {
 	// 注册子命令
 	CmdMake.AddCommand(
-		CmdMakeCmd,
-		CmdMakeModel,
+		CmdMakeCmd,           // 生成自定义命令
+		CmdMakeModel,         // 生成模型文件
+		CmdMakeApiController, // 生成控制器
 	)
 }
 
@@ -83,7 +84,7 @@ func makeModelFromString(name string) Model {
 func createFileFromStub(filePath string, stubName string, model Model, variables ...interface{}) {
 	// 实现最后一个参数可选
 	replaces := make(map[string]string)
-	if len(replaces) > 0 {
+	if len(variables) > 0 {
 		replaces = variables[0].(map[string]string)
 	}
 
