@@ -26,3 +26,24 @@ func Add(name string, up migrationFunc, down migrationFunc) {
 		FileName: name,
 	})
 }
+
+// getMigrationFile 通过迁移文件名称获取 MigrationFile 对象
+func getMigrationFile(fileName string) MigrationFile {
+	for _, mfile := range migrationFiles {
+		if fileName == mfile.FileName {
+			return mfile
+		}
+	}
+
+	return MigrationFile{}
+}
+
+// isNotMigrated 判断迁移是否执行
+func (mfile MigrationFile) isNotMigrated(migrations []Migration) bool {
+	for _, migration := range migrations {
+		if migration.Migration == mfile.FileName {
+			return false
+		}
+	}
+	return true
+}
