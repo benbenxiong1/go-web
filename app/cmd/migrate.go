@@ -36,12 +36,19 @@ var CmdMigrateRefresh = &cobra.Command{
 	Run:   runRefresh,
 }
 
+var CmdMigrateFresh = &cobra.Command{
+	Use:   "fresh",
+	Short: "",
+	Run:   runFresh,
+}
+
 func init() {
 	CmdMigrate.AddCommand(
 		CmdMigrateUp,      // 执行迁移
 		CmdMigrateDown,    // 回滚上一次迁移
 		CmdMigrateReset,   // 回滚所有迁移
 		CmdMigrateRefresh, // 回滚所有迁移 并执行所有迁移
+		CmdMigrateFresh,   // 删除数据库所有表，并执行所有迁移
 	)
 }
 
@@ -67,4 +74,8 @@ func runReset(cmd *cobra.Command, args []string) {
 
 func runRefresh(cmd *cobra.Command, args []string) {
 	migrator().Refresh()
+}
+
+func runFresh(cmd *cobra.Command, args []string) {
+	migrator().Fresh()
 }

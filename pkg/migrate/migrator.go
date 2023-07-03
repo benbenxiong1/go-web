@@ -106,11 +106,30 @@ func (m *Migrator) Reset() {
 	}
 }
 
+// Refresh 回滚所有迁移，并再次执行所有迁移
 func (m *Migrator) Refresh() {
 	// 回滚所有迁移
 	m.Reset()
 
 	// 再次执行所有迁移
+	m.Up()
+}
+
+func (m *Migrator) Fresh() {
+	// 获取数据库名称，用以提示
+	dbName := database.CurrentDatabase()
+
+	// 删除所有表
+	err := database.DeleteAllTable()
+	console.ExitIf(err)
+
+	console.Success("clearup database " + dbName)
+
+	// 重新创建 migrate 表
+	m.CreateMigrationsTable()
+	console.Success("[migrations] table created.")
+
+	// 重新调用 up 命令
 	m.Up()
 }
 
