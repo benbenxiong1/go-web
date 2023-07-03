@@ -19,7 +19,7 @@ type Migrator struct {
 type Migration struct {
 	ID        uint64 `gorm:"primaryKey,autoIncrement;"`
 	Migration string `gorm:"type:varchar(255);not null;unique;"`
-	batch     int
+	Batch     int
 }
 
 func NewMigrator() *Migrator {
@@ -93,7 +93,7 @@ func (m *Migrator) readAllMigrationFiles() []MigrationFile {
 
 		// 判断迁移文件是否可用
 		if len(mfile.FileName) > 0 {
-			migrationFiles = append(migrateFiels, mfile)
+			migrateFiels = append(migrateFiels, mfile)
 		}
 	}
 
@@ -112,7 +112,7 @@ func (m *Migrator) getBatch() int {
 
 	// 如果有值 +1
 	if lastMigration.ID > 0 {
-		batch = lastMigration.batch + 1
+		batch = lastMigration.Batch + 1
 	}
 
 	return batch
@@ -133,7 +133,7 @@ func (m *Migrator) runUpMigration(mfile MigrationFile, batch int) {
 	// 入库
 	err := m.DB.Create(&Migration{
 		Migration: mfile.FileName,
-		batch:     batch,
+		Batch:     batch,
 	}).Error
 
 	console.ExitIf(err)

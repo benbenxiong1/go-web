@@ -67,6 +67,7 @@ func init() {
 		CmdMakeModel,         // 生成模型文件
 		CmdMakeApiController, // 生成控制器
 		CmdMakeRequest,       // 生成请求验证
+		CmdMakeMigration,     // 数据库迁移文件
 	)
 }
 
