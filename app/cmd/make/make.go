@@ -63,6 +63,7 @@ func init() {
 	// 注册子命令
 	CmdMake.AddCommand(
 		CmdMakeCmd,
+		CmdMakeModel,
 	)
 }
 
