@@ -93,6 +93,27 @@ func (m *Migrator) Rollback() {
 
 }
 
+// Reset 回滚所有迁移
+func (m *Migrator) Reset() {
+	var migrations []Migration
+
+	// 按照顺序读取所有迁移文件
+	m.DB.Order("id DESC").Find(&migrations)
+
+	// 回滚所有迁移
+	if m.rollbackMigrations(migrations) {
+		console.Success("[migrations] table is empty, nothing to rollback.")
+	}
+}
+
+func (m *Migrator) Refresh() {
+	// 回滚所有迁移
+	m.Reset()
+
+	// 再次执行所有迁移
+	m.Up()
+}
+
 // readAllMigrationFiles 从文件目录读取文件，确保正确的时间排序
 func (m *Migrator) readAllMigrationFiles() []MigrationFile {
 	// 读取 database/migration/ 目录下的所有文件
