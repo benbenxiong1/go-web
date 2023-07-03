@@ -3,6 +3,7 @@ package make
 import (
 	"embed"
 	"fmt"
+	"github.com/iancoleman/strcase"
 	"github.com/spf13/cobra"
 	"go-web/pkg/console"
 	"go-web/pkg/file"
@@ -65,19 +66,21 @@ func init() {
 		CmdMakeCmd,           // 生成自定义命令
 		CmdMakeModel,         // 生成模型文件
 		CmdMakeApiController, // 生成控制器
+		CmdMakeRequest,       // 生成请求验证
 	)
 }
 
 // makeModelFromString 格式化用户输入的内容
 func makeModelFromString(name string) Model {
-	return Model{
-		StructName:         str.Singular(name),
-		StructNamePlural:   str.Plural(name),
-		TableName:          str.Snake(name),
-		VariableName:       str.LowerCamel(name),
-		PackageName:        str.Snake(name),
-		VariableNamePlural: str.LowerCamel(name),
-	}
+	model := Model{}
+	model.StructName = str.Singular(strcase.ToCamel(name))
+	model.StructNamePlural = str.Plural(model.StructName)
+	model.TableName = str.Snake(model.StructNamePlural)
+	model.VariableName = str.LowerCamel(model.StructName)
+	model.PackageName = str.Snake(model.StructName)
+	model.VariableNamePlural = str.LowerCamel(model.StructNamePlural)
+
+	return model
 }
 
 // createFileFromStub 读取 stub 文件并进行变量替换
