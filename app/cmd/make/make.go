@@ -69,6 +69,7 @@ func init() {
 		CmdMakeRequest,       // 生成请求验证
 		CmdMakeMigration,     // 数据库迁移文件
 		CmdMakeFactory,       //模型工厂
+		CmdMakeSeeder,        // 数据库迁移
 	)
 }
 
