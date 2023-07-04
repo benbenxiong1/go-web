@@ -3,6 +3,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	v12 "go-web/app/http/controllers/api/v1"
 	"go-web/app/http/controllers/api/v1/auth"
 	"go-web/app/http/middlewares"
 )
@@ -50,6 +51,11 @@ func RegisterAPIRoutes(route *gin.Engine) {
 			authGroup.POST("/password-reset/using-phone", middlewares.LimitPerRoute("5-H"), pwd.ResetByPhone)
 			// 邮箱+验证码修改密码
 			authGroup.POST("/password-reset/using-email", middlewares.LimitPerRoute("5-H"), pwd.ResetByEmail)
+
+			user := new(v12.UsersController)
+			// 获取当前用户
+			v1.GET("/user", middlewares.AuthJwt(), user.CurrenUser)
+
 		}
 	}
 }

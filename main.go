@@ -43,11 +43,12 @@ func main() {
 
 	// 注册子命令
 	rootCmd.AddCommand(
-		cmd.CmdServe,
-		cmd.CmdKey,
-		cmd.CmdPlay,
-		make.CmdMake,
-		cmd.CmdMigrate,
+		cmd.CmdServe,    // 启动程序
+		cmd.CmdKey,      // 生成key
+		cmd.CmdPlay,     // 测试
+		make.CmdMake,    // make 命令
+		cmd.CmdMigrate,  // 数据迁移
+		cmd.CmdDBSeeder, // 数据填充
 	)
 
 	// 配置默认运行 web 服务
