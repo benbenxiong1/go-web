@@ -62,5 +62,19 @@ func RegisterAPIRoutes(route *gin.Engine) {
 			// 获取所有用户
 			userGroup.GET("", user.Index)
 		}
+
+		// 分类
+		cgc := new(v12.CategoriesController)
+		cgcGroup := v1.Group("/categories")
+		{
+			// 列表
+			cgcGroup.GET("", cgc.Index)
+			// 新增
+			cgcGroup.POST("", cgc.Store)
+			// 修改
+			cgcGroup.PUT("/:id", cgc.Update)
+			// 删除
+			cgcGroup.DELETE("/:id", cgc.Delete)
+		}
 	}
 }
