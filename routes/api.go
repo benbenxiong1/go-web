@@ -76,5 +76,18 @@ func RegisterAPIRoutes(route *gin.Engine) {
 			// 删除
 			cgcGroup.DELETE("/:id", cgc.Delete)
 		}
+
+		tpc := new(v12.TopicsController)
+		tpcGroup := v1.Group("/topics")
+		{
+			// 列表
+			tpcGroup.GET("", tpc.Index)
+			// 新增
+			tpcGroup.POST("", tpc.Store)
+			// 修改
+			tpcGroup.PUT("/:id", tpc.Update)
+			// 删除
+			tpcGroup.DELETE("/:id", tpc.Delete)
+		}
 	}
 }
