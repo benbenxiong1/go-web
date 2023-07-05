@@ -1,7 +1,12 @@
 // Package user  user : benbenxiong  time : 2023-07-2023/6/7 20:20:48
 package user
 
-import "go-web/pkg/database"
+import (
+	"github.com/gin-gonic/gin"
+	"go-web/pkg/app"
+	"go-web/pkg/database"
+	"go-web/pkg/paginator"
+)
 
 // IsEmailExist 判断email是否存在
 func IsEmailExist(email string) bool {
@@ -42,5 +47,11 @@ func Get(userId string) (userModel User) {
 
 func All() (users []User) {
 	database.DB.Find(&users)
+	return
+}
+
+func Paginate(c *gin.Context, perPage int) (users []User, paging paginator.Paging) {
+	paging = paginator.Paginate(c, database.DB.Model(&User{}), &users, app.V1Url(database.TableName(&User{})), perPage)
+
 	return
 }

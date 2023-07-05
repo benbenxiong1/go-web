@@ -36,31 +36,31 @@ func RegisterAPIRoutes(route *gin.Engine) {
 			// 验证email+验证码
 			authGroup.POST("/verify-codes/email", middlewares.LimitPerRoute("20-H"), vcc.SendUsingEmail)
 
-			// 登录
-			login := new(auth.LoginController)
-			// 手机号 + 验证码登录
-			authGroup.POST("/login/using-phone", middlewares.GuestJwt(), login.LoginByPhone)
-			// 支持手机号/用户名/邮箱登录
-			authGroup.POST("/login/using-password", middlewares.GuestJwt(), login.Login)
-			// 刷新token
-			authGroup.POST("/login/refresh-token", middlewares.AuthJwt(), login.RefreshToken)
+		}
 
-			// 修改密码
-			pwd := new(auth.PasswordController)
-			// 手机号+验证码修改密码
-			authGroup.POST("/password-reset/using-phone", middlewares.LimitPerRoute("5-H"), pwd.ResetByPhone)
-			// 邮箱+验证码修改密码
-			authGroup.POST("/password-reset/using-email", middlewares.LimitPerRoute("5-H"), pwd.ResetByEmail)
+		// 登录
+		login := new(auth.LoginController)
+		// 手机号 + 验证码登录
+		authGroup.POST("/login/using-phone", middlewares.GuestJwt(), login.LoginByPhone)
+		// 支持手机号/用户名/邮箱登录
+		authGroup.POST("/login/using-password", middlewares.GuestJwt(), login.Login)
+		// 刷新token
+		authGroup.POST("/login/refresh-token", middlewares.AuthJwt(), login.RefreshToken)
 
-			user := new(v12.UsersController)
-			// 获取当前用户
-			v1.GET("/user", middlewares.AuthJwt(), user.CurrenUser)
-			userGroup := v1.Group("/users")
-			{
-				// 获取所有用户
-				userGroup.GET("", user.Index)
-			}
+		// 修改密码
+		pwd := new(auth.PasswordController)
+		// 手机号+验证码修改密码
+		authGroup.POST("/password-reset/using-phone", middlewares.LimitPerRoute("5-H"), pwd.ResetByPhone)
+		// 邮箱+验证码修改密码
+		authGroup.POST("/password-reset/using-email", middlewares.LimitPerRoute("5-H"), pwd.ResetByEmail)
 
+		user := new(v12.UsersController)
+		// 获取当前用户
+		v1.GET("/user", middlewares.AuthJwt(), user.CurrenUser)
+		userGroup := v1.Group("/users")
+		{
+			// 获取所有用户
+			userGroup.GET("", user.Index)
 		}
 	}
 }
