@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"go-web/app/model/user"
+	"go-web/app/requests"
 	"go-web/pkg/auth"
 	"go-web/pkg/response"
 )
@@ -18,6 +19,11 @@ func (ctrl *UsersController) CurrenUser(c *gin.Context) {
 }
 
 func (ctrl *UsersController) Index(c *gin.Context) {
+	request := requests.PaginationRequest{}
+	if ok := requests.Validate(c, &request, requests.Pagination); !ok {
+		return
+	}
+
 	data, pager := user.Paginate(c, 10)
 	response.Json(c, gin.H{
 		"data":  data,
