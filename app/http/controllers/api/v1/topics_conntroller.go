@@ -2,6 +2,7 @@ package v1
 
 import (
 	"go-web/app/model/topic"
+	"go-web/app/policies"
 	"go-web/app/requests"
 	"go-web/pkg/auth"
 	"go-web/pkg/response"
@@ -24,6 +25,15 @@ func (ctrl *TopicsController) Index(c *gin.Context) {
 		"data":  data,
 		"pager": pager,
 	})
+}
+
+func (ctrl *TopicsController) Show(c *gin.Context) {
+	topicModel := topic.Get(c.Param("id"))
+	if topicModel.ID == 0 {
+		response.Abort404(c)
+		return
+	}
+	response.Data(c, topicModel)
 }
 
 func (ctrl *TopicsController) Store(c *gin.Context) {
@@ -55,6 +65,12 @@ func (ctrl *TopicsController) Update(c *gin.Context) {
 		return
 	}
 
+	// 通过授权策略判断话题是否属于当前用户
+	if ok := policies.CanModifyTopic(c, topicModel); !ok {
+		response.Abort403(c)
+		return
+	}
+
 	request := requests.TopicRequest{}
 	if ok := requests.Validate(c, &request, requests.TopicSave); !ok {
 		return
@@ -76,6 +92,11 @@ func (ctrl *TopicsController) Delete(c *gin.Context) {
 	topicModel := topic.Get(c.Param("id"))
 	if topicModel.ID == 0 {
 		response.Abort404(c)
+		return
+	}
+
+	if ok := policies.CanModifyTopic(c, topicModel); !ok {
+		response.Abort403(c)
 		return
 	}
 

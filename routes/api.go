@@ -84,6 +84,7 @@ func RegisterAPIRoutes(route *gin.Engine) {
 			tpcGroup.GET("", tpc.Index)
 			// 新增
 			tpcGroup.POST("", tpc.Store)
+			tpcGroup.GET("/:id", tpc.Show)
 			// 修改
 			tpcGroup.PUT("/:id", tpc.Update)
 			// 删除

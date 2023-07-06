@@ -70,6 +70,7 @@ func init() {
 		CmdMakeMigration,     // 数据库迁移文件
 		CmdMakeFactory,       //模型工厂
 		CmdMakeSeeder,        // 数据库迁移
+		CmdMakePolicy,        // 生成策略授权文件
 	)
 }
 
